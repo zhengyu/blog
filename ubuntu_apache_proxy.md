@@ -19,7 +19,7 @@ tags:
 a2enmod proxy proxy_balancer proxy_http 
 ```
 
-加载完成后需要使用命令```/etc/init.d/apache2 restart```重启服务器
+加载完成后需要使用命令 ```/etc/init.d/apache2 restart``` 重启服务器
 
 2.配置反向代理功能，进入sites_available，创建一个新的站点配置文件，然后编辑内容如下：
 
@@ -44,6 +44,7 @@ a2enmod proxy proxy_balancer proxy_http
         </Proxy>
 </VirtualHost>
 ```
+
 然后通过a2ensite命令加载当前配置
 
 最后重启apache，当你重新打开网页的时候就会跳转到4000端口的博客了
