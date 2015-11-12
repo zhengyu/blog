@@ -1,8 +1,12 @@
-title: ubuntu apache反向代理配置   
-date: 2015-11-11 09:12:30   
-tags:
-
----
+<!--
+author: zhengyu
+date: 2015-11-11 09:12:30
+title: ubuntu apache反向代理配置
+tags: ubuntu,apache
+category: linux,服务器
+status: publish
+summary: ubuntu 14.04 apache配置反向代理
+-->
 
 最近因为配置一个nodejs的博客，然而我的vps上面的80端口已经被占用了，所以就打算使用反向代理技术。
 
@@ -17,7 +21,6 @@ tags:
 1.加载apache模块，使用a2enmod命令加载模块
 
 ```
-
 a2enmod proxy proxy_balancer proxy_http 
 
 ```
@@ -27,27 +30,25 @@ a2enmod proxy proxy_balancer proxy_http
 2.配置反向代理功能，进入sites_available，创建一个新的站点配置文件，然后编辑内容如下：
 
 ```
-
 <VirtualHost *:80>
-		#配置站点的域名
-        ServerName xxx.com
-        #配置站点的管理员信息
-        ServerAdmin xxx@gmail.com
+	#配置站点的域名
+    ServerName xxx.com
+    #配置站点的管理员信息
+    ServerAdmin xxx@gmail.com
 
-		#off表示开启反向代理，on表示开启正向代理
-        ProxyRequests Off
-        ProxyMaxForwards 100
-        ProxyPreserveHost On
-        #这里表示要将现在这个虚拟主机跳转到本机的4000端口
-        ProxyPass / http://127.0.0.1:4000/
-        ProxyPassReverse / http://127.0.0.1:4000/
+    #off表示开启反向代理，on表示开启正向代理
+    ProxyRequests Off
+    ProxyMaxForwards 100
+    ProxyPreserveHost On
+    #这里表示要将现在这个虚拟主机跳转到本机的4000端口
+    ProxyPass / http://127.0.0.1:4000/
+    ProxyPassReverse / http://127.0.0.1:4000/
 
-        <Proxy *>
-            Order Deny,Allow
-            Allow from all
-        </Proxy>
+    <Proxy *>
+        Order Deny,Allow
+        Allow from all
+    </Proxy>
 </VirtualHost>
-
 ```
 
 然后通过a2ensite命令加载当前配置
