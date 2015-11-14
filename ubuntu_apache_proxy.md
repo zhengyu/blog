@@ -22,7 +22,6 @@ summary: ubuntu 14.04 apache配置反向代理
 
 ```
 a2enmod proxy proxy_balancer proxy_http 
-
 ```
 
 加载完成后需要使用命令 `/etc/init.d/apache2 restart` 重启服务器
