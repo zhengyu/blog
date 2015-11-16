@@ -8,3 +8,4 @@ status: draft
 summary: 使用git hook来更新项目
 -->
 
+由于使用的是gitblog
