@@ -16,5 +16,8 @@ summary: javascript设计模式：构造器模式
 构造器模式代码实现
 ---
 
+```javascript
+console.log('test');
+```
 
 
