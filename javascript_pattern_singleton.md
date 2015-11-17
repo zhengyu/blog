@@ -1,7 +1,7 @@
 <!--
 author: zhengyu
 date: 2015-11-16 15:05:02
-title: javascript单例模式
+title: javascript设计模式：单例模式
 tags: javascript,单例模式,设计模式
 category: javascript,设计模式
 status: publish
