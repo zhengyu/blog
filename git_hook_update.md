@@ -1,12 +1,17 @@
-<!--
+---
 author: zhengyu
-date: 2015-11-14 12:31:02
 title: 使用git hook自动部署项目
-tags: git
-category: linux,git
-status: publish
-summary: 使用git hook来更新项目
--->
+description: 使用git hook来更新项目
+date: 2015-11-14 12:31:02
+updated: 2015-11-14 12:31:02
+comments: true
+tags: 
+    - linux
+    - git
+categories: 
+    - linux
+    - git
+---
 
 由于使用的是gitblog，那怎么能不用git呢，于是就将blog也放到git上了，每次在本地写好文章，然后```git push```上去，再ssh到服务器上```git pull```，虽然不算十分复杂，但是作为一个程序员，能自(tou)动(lan)就肯定不会手动，而且git也正好有个hook的机制可以让你对仓库做了动作的时候给你callback，于是本文就诞生了。
 

@@ -1,12 +1,18 @@
-<!--
+---
 author: zhengyu
-date: 2015-11-20 16:15:02
 title: php函数：__autoload、spl_autoload_register
-tags: php,php函数
-category: php
-status: publish
-summary: php函数：__autoload、spl_autoload_register
--->
+description: php函数：__autoload、spl_autoload_register
+date: 2015-11-20 16:15:02
+updated: 2015-11-20 16:15:02
+comments: true
+tags: 
+    - php
+    - 单例模式
+    - 设计模式
+categories: 
+    - php
+    - php函数
+---
 
 函数作用
 ---

@@ -1,12 +1,18 @@
-<!--
+---
 author: zhengyu
-date: 2015-11-16 15:05:02
 title: javascript设计模式：单例模式
-tags: javascript,单例模式,设计模式
-category: javascript,设计模式
-status: publish
-summary: javascript单例模式代码实现
--->
+description: javascript设计模式：单例模式
+date: 2015-11-16 15:05:02
+updated: 2015-11-16 15:05:02
+comments: true
+tags: 
+    - javascript
+    - 单例模式
+    - 设计模式
+categories: 
+    - javascript
+    - 设计模式
+---
 
 单例模式主要是为了确保一个类只有一个实例，具体实现方式是判断当前类是否已实例化，如果有则返回保存的对象，如果没有则创建一个新的实例。
 

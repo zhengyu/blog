@@ -1,12 +1,15 @@
-<!--
+---
 author: zhengyu
-date: 2015-12-28 13:25:02
 title: yii2使用验证码组件
-tags: yii2
-category: php
-status: publish
-summary: yii2使用验证码组件
--->
+description: yii2使用验证码组件
+date: 2015-12-28 13:25:02
+updated: 2015-12-28 13:25:02
+comments: true
+tags: 
+    - yii2
+categories: 
+    - yii2
+---
 
 yii2自带的例子里面有一个关于验证码的使用例子，但是本篇文章讨论的是用另外一种方式手动生成和验证验证码。
 

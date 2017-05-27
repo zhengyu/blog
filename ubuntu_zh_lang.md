@@ -1,12 +1,16 @@
-<!--
+---
 author: zhengyu
-date: 2015-11-12 13:31:02
 title: ubuntu添加中文支持
-tags: ubuntu
-category: linux
-status: publish
-summary: ubuntu 14.04 添加中文支持
--->
+description: ubuntu 14.04 添加中文支持
+date: 2015-11-12 13:31:02
+updated: 2015-11-12 13:31:02
+comments: true
+tags: 
+    - linux
+    - ubuntu
+categories: 
+    - linux
+---
 
 原本服务器的ubuntu系统只支持因为，由于一直也没有什么时间，所以也就没有管，最近实在是真的需要中文了，所以也就给系统装上了中文。
 

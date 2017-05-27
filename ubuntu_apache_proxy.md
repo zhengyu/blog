@@ -1,12 +1,18 @@
-<!--
+---
 author: zhengyu
-date: 2015-11-11 09:12:30
 title: ubuntu apache反向代理配置
-tags: ubuntu,apache
-category: linux,服务器
-status: publish
-summary: ubuntu 14.04 apache配置反向代理
--->
+description: ubuntu apache反向代理配置
+date: 2015-11-11 09:12:30
+updated: 2015-11-11 09:12:30
+comments: true
+tags: 
+    - linux
+    - 服务器
+    - apache
+categories: 
+    - linux
+    - 服务器
+---
 
 最近因为配置一个nodejs的博客，然而我的vps上面的80端口已经被占用了，所以就打算使用反向代理技术。
 
