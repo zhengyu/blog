@@ -1,0 +1,216 @@
+---
+author: zhengyu
+title: 从零开始搭建centos LAMP服务器
+description: 在centos 上搭建 LAMP服务器
+date: 2017-05-27 14:52:58
+updated: 2017-05-27 14:53:02
+comments: true
+tags: 
+    - centos
+    - nginx
+    - php
+categories: 
+    - linux
+    - nginx
+    - php
+---
+
+作为程序员，搭建环境应该作为一种基本功，本篇文章主要记录一下我自己是怎么在一个新安装的centos服务器上搭建LAMP环境
+
+一般安装环境，我都是按照`nginx -> php -> mysql` 这个顺序来安装的
+
+nginx安装
+===
+
+### 下载必要的类库
+
+将PCRE、zlib、openssl这些类库下载到当前用户的home目录（~）
+
+* PCRE
+
+```bash
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.39.tar.bz2
+
+# 解压
+bzip2 -d pcre-8.39.tar.bz2
+tar xvf pcre-8.39.tar
+```
+
+* zlib
+
+```bash
+wget http://zlib.net/zlib-1.2.8.tar.gz
+
+# 解压
+gzip -d zlib-1.2.8.tar.gz
+tar xvf zlib-1.2.8.tar
+```
+
+* openssl
+
+```bash
+wget https://www.openssl.org/source/openssl-1.0.1t.tar.gz
+
+# 解压
+tar zxvf openssl-1.0.1t.tar.gz
+```
+
+这些文件下载接口后就可以开始正式安装nginx
+
+* nginx
+
+```bash
+wget http://nginx.org/download/nginx-1.10.1.tar.gz
+
+# 解压
+tar zxvf nginx-1.10.1.tar.gz
+
+# 将目录安装到 /usr/local/nginx
+./configure --sbin-path=/usr/local/nginx/nginx --conf-path=/usr/local/nginx/nginx.conf --pid-path=/usr/run/nginx.pid --modules-path=/usr/local/nginx/modules --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-http_ssl_module --with-pcre=/usr/local/src/pcre-8.39 --with-zlib=/usr/local/src/zlib-1.2.8 --with-openssl=/usr/local/src/openssl-1.0.1t --user=nginx --group=nginx
+make
+make install
+```
+
+* 编写nginx启动脚本
+
+可以对照官方的例子：`https://www.nginx.com/resources/wiki/start/topics/examples/redhatnginxinit/#`，将编写好的启动脚本保存为 `/etc/init.d/nginx`
+
+```bash
+#!/bin/sh
+#
+# nginx - this script starts and stops the nginx daemon
+#
+# chkconfig:   - 85 15
+# description:  NGINX is an HTTP(S) server, HTTP(S) reverse \
+#               proxy and IMAP/POP3 proxy server
+# processname: nginx
+# config:      /etc/nginx/nginx.conf
+# config:      /etc/sysconfig/nginx
+# pidfile:     /var/run/nginx.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "$NETWORKING" = "no" ] && exit 0
+
+nginx="/usr/local/nginx/nginx"
+prog=$(basename $nginx)
+
+NGINX_CONF_FILE="/usr/local/nginx/nginx.conf"
+
+[ -f /etc/sysconfig/nginx ] && . /etc/sysconfig/nginx
+
+lockfile=/var/lock/subsys/nginx
+
+make_dirs() {
+   # make required directories
+   user=`$nginx -V 2>&1 | grep "configure arguments:" | sed 's/[^*]*--user=\([^ ]*\).*/\1/g' -`
+   if [ -z "`grep $user /etc/passwd`" ]; then
+       useradd -M -s /bin/nologin $user
+   fi
+   options=`$nginx -V 2>&1 | grep 'configure arguments:'`
+   for opt in $options; do
+       if [ `echo $opt | grep '.*-temp-path'` ]; then
+           value=`echo $opt | cut -d "=" -f 2`
+           if [ ! -d "$value" ]; then
+               # echo "creating" $value
+               mkdir -p $value && chown -R $user $value
+           fi
+       fi
+   done
+}
+
+start() {
+    [ -x $nginx ] || exit 5
+    [ -f $NGINX_CONF_FILE ] || exit 6
+    make_dirs
+    echo -n $"Starting $prog: "
+    daemon $nginx -c $NGINX_CONF_FILE
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && touch $lockfile
+    return $retval
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog -QUIT
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
+}
+
+restart() {
+    configtest || return $?
+    stop
+    sleep 1
+    start
+}
+
+reload() {
+    configtest || return $?
+    echo -n $"Reloading $prog: "
+    killproc $nginx -HUP
+    RETVAL=$?
+    echo
+}
+
+force_reload() {
+    restart
+}
+
+configtest() {
+  $nginx -t -c $NGINX_CONF_FILE
+}
+
+rh_status() {
+    status $prog
+}
+
+rh_status_q() {
+    rh_status >/dev/null 2>&1
+}
+
+case "$1" in
+    start)
+        rh_status_q && exit 0
+        $1
+        ;;
+    stop)
+        rh_status_q || exit 0
+        $1
+        ;;
+    restart|configtest)
+        $1
+        ;;
+    reload)
+        rh_status_q || exit 7
+        $1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+            ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest}"
+        exit 2
+esac
+```
+
+* 设置nginx自启动
+
+```bash
+sudo chkconfig --add nginx
+sudo chkconfig nginx on
+```
+
